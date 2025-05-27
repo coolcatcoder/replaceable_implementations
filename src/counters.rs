@@ -25,16 +25,16 @@ impl Counters {
         Self([const { OnceLock::new() }; 5], OnceLock::new())
     }
 
-    /// Adds to the current value, returning the previous value.  
-    /// If the counter with the specified id does not exist, it will start from start_at.  
-    /// Returns an Err([std::env::VarError]) if CARGO_CRATE_NAME couldn't be fetched from the environment.
+    /// Adds to the current value, returning the previous value.\
+    /// If the counter with the specified id does not exist, it will start from `start_at`.\
+    /// Returns an Err([`std::env::VarError`]) if `CARGO_CRATE_NAME` couldn't be fetched from the environment.
     pub fn fetch_add(&self, id: String, start_at: u16) -> Result<u16, std::env::VarError> {
         let crate_name: String = std::env::var("CARGO_CRATE_NAME")?;
 
         Ok(self.fetch_add_internal(crate_name, id, start_at))
     }
 
-    /// Recursive interior of fetch_add.
+    /// Recursive interior of `fetch_add`.
     fn fetch_add_internal(&self, crate_name: String, id: String, start_at: u16) -> u16 {
         for trait_counter in &self.0 {
             let trait_counter = trait_counter.get_or_init(|| Counter {
