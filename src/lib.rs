@@ -1,5 +1,4 @@
 #![deny(clippy::unwrap_used)]
-#![warn(clippy::pedantic)]
 
 use counters::Counters;
 use proc_macro2::{Span, TokenStream};
@@ -39,7 +38,7 @@ pub fn setup(capacity: u32) -> TokenStream {
 /// Any other implementations will replace this one, no matter the execution order.
 /// 
 /// # Errors
-/// It will only error if there is something wrong with the `path_to_setup` or the `implementation`.\
+/// It will only error if there is something wrong with the `path_to_setup` or the `implementation`.
 pub fn initial_implementation(
     path_to_setup: &Path,
     implementation: ItemImpl,
@@ -47,13 +46,18 @@ pub fn initial_implementation(
     make_replaceable(path_to_setup, 0, implementation)
 }
 
+/// Replaces the previous implementation marked by the `id` with a new implementation.\
+/// Returns the quantity of previous implementations as well as the function that will actually replace the implementation.
+/// 
+/// # Errors
+/// Will only error if the crate name cannot be fetched from the environment variables.
 pub fn replace_implementation(
     path_to_setup: &Path,
     id: String,
     has_initial_implementation: bool,
 ) -> Result<(u16, impl FnOnce(ItemImpl) -> TokenStream), VarError> {
     let previous_implementations =
-        IMPLEMENTATION_COUNTERS.fetch_add(id, has_initial_implementation as u16)?;
+        IMPLEMENTATION_COUNTERS.fetch_add(id, has_initial_implementation.into())?;
     let replace = move |implementation: ItemImpl| -> TokenStream {
         let implementation =
             match make_replaceable(path_to_setup, previous_implementations, implementation) {

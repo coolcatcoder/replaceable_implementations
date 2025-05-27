@@ -11,7 +11,7 @@ struct Counter {
     counter: AtomicU16,
 }
 
-/// Stores counters referred to by id strings.  
+/// Stores counters referred to by id strings.\
 /// Will never deadlock.
 pub struct Counters(
     // 5 per allocation was chosen arbitrarily.
