@@ -49,6 +49,10 @@ pub fn initial_implementation(
 /// Replaces the previous implementation marked by the `id` with a new implementation.\
 /// Returns the quantity of previous implementations as well as the function that will actually replace the implementation.
 /// 
+/// # Be Careful
+/// There is no guarantee on the execution order of procedural macros.\
+/// You must take care to make sure that your macros work in all execution orders.
+/// 
 /// # Errors
 /// Will only error if the crate name cannot be fetched from the environment variables.
 pub fn replace_implementation(
