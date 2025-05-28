@@ -12,7 +12,7 @@ static IMPLEMENTATION_COUNTERS: Counters = Counters::new();
 
 /// Due to orphan rules, we need to perform some setup.\
 /// This should be put in one spot that you know the path to.
-/// That could be crate root, or a specific module that is passed into your macros. It is up to you.\
+/// That could be the crate root, or a specific module that is passed into your macros. It is up to you.\
 /// The capacity is used to set the max number of implementations that can be replaced.
 #[must_use]
 pub fn setup(capacity: u32) -> TokenStream {
@@ -54,7 +54,7 @@ pub fn initial_implementation(
 /// You must take care to make sure that your macros work in all execution orders.
 /// 
 /// # Errors
-/// Will only error if the crate name cannot be fetched from the environment variables.
+/// It will only error if the crate name cannot be fetched from the environment variables.
 pub fn replace_implementation(
     path_to_setup: &Path,
     id: String,
